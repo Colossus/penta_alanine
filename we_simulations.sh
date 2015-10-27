@@ -6,8 +6,8 @@
 # num_sim_walkers should be equal to num_nodes * num_cpu, since one walker will run with one node.
 ###
 
-export MAIN_DIRECTORY=/scratch/users/jbirgmei/CS229/WE_Penta_Alanine
-export WALKER_DIRECTORY=/scratch/users/jbirgmei/CS229/WE_Penta_Alanine/WE
+export MAIN_DIRECTORY=/scratch/users/jbirgmei/CS229/penta_alanine
+export WALKER_DIRECTORY=/scratch/users/jbirgmei/CS229/penta_alanine/WE
 export GROMACS=/home/jbirgmei/gromacs/4.6.4/bin
 
 num_nodes=1

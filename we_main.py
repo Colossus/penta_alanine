@@ -2,7 +2,7 @@ import numpy as np
 from time import time
 import os
 import sys
-main_directory = '/scratch/users/jbirgmei/CS229/WE_Penta_Alanine'  # TODO: set main directory for WE simulation
+main_directory = '/scratch/users/sahn1/WE_Triazine'  # TODO: set main directory for WE simulation
 sys.path.append(main_directory)
 os.chdir(main_directory)
 import we_global_variables as gv
@@ -59,11 +59,12 @@ def weighted_ensemble_simulation(input_parameters_file, input_initial_values_fil
         new_balls = we_functions.binning(step_num, walker_list, temp_walker_list, balls, ball_to_walkers, key_to_ball)
 
         # third, perform spectral clustering if enhanced_sampling_flag = 3
-        if gv.enhanced_sampling_flag == 3 and gv.num_balls_for_sc <= gv.num_occupied_balls and step_num != 0:
+        if gv.enhanced_sampling_flag == 3 and gv.num_balls_for_sc <= gv.num_occupied_balls and \
+                        step_num != gv.initial_step_num:
             we_functions.spectral_clustering(step_num, temp_walker_list, new_balls,  ball_clusters_list)
             # fourth, resample walkers for every ball
-            we_functions.resampling_for_sc(walker_list, temp_walker_list, ball_to_walkers, ball_clusters_list,
-                                           key_to_ball)
+            we_functions.resampling_for_sc(walker_list, temp_walker_list, new_balls, ball_to_walkers,
+                                           ball_clusters_list, vacant_walker_indices)
         else:
             # fourth, resample walkers for every ball
             we_functions.resampling(walker_list, temp_walker_list, new_balls, ball_to_walkers, vacant_walker_indices)
