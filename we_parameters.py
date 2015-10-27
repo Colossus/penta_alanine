@@ -1,5 +1,5 @@
-main_directory=/scratch/users/jbirgmei/CS229/penta_alanine
-initial_configuration_directory=/scratch/users/jbirgmei/CS229/penta_alanine/StarterFolderGROMACS_WE
+main_directory='/scratch/users/jbirgmei/CS229/penta_alanine'
+initial_configuration_directory='/scratch/users/jbirgmei/CS229/penta_alanine/StarterFolderGROMACS_WE'
 
 simulation_flag=0  # 0: new simulation. 1: restarting simulation from middle of simulation. 2: restarting simulation from
                    # middle of binning. 3: restarting simulation from middle of resampling.
@@ -50,7 +50,7 @@ properties_to_keep_track=[20, 21, 22]  # properties of the
 # num_clusters  # number of clusters for k-means part of spectral clustering
 # num_walkers_for_sc  # number of walkers for each macro-state, usually set equal to the avg number of walkers per
                     # macro-state, which is (num_balls_for_sc/num_clusters)*num_walkers
-timestep  # length of timestep in ps
+# timestep  # length of timestep in ps
 
 # as an example,
 # 1000

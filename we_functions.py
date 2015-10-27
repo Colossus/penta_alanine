@@ -7,7 +7,7 @@ from scipy.cluster.vq import kmeans2, ClusterError
 import walker
 import we_global_variables as gv
 import we_check_state_function
-import we_parameters p
+import we_parameters as p
 
 
 def calculate_distance_from_center(center, values):
