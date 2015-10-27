@@ -1,13 +1,8 @@
-mkdir: cannot create directory `WE': File exists
 Traceback (most recent call last):
-  File "we_main.py", line 82, in <module>
+  File "we_main.py", line 83, in <module>
     weighted_ensemble_simulation('we_parameters.txt', 'we_initial_values.txt')
-  File "we_main.py", line 27, in weighted_ensemble_simulation
-    vacant_walker_indices)
-  File "/scratch/users/jbirgmei/CS229/WE_Penta_Alanine_jbirgmei/we_functions.py", line 96, in initialize
-    shutil.copytree(gv.initial_configuration_directory, walker_directory)
-  File "/usr/lib64/python2.6/shutil.py", line 142, in copytree
-    os.makedirs(dst)
-  File "/usr/lib64/python2.6/os.py", line 157, in makedirs
-    mkdir(name, mode)
-OSError: [Errno 17] File exists: '/scratch/users/jbirgmei/CS229/WE_Penta_Alanine_jbirgmei/WE/walker0'
+  File "we_main.py", line 14, in weighted_ensemble_simulation
+    we_functions.set_parameters(input_parameters_file)
+  File "/scratch/users/jbirgmei/CS229/penta_alanine/we_functions.py", line 26, in set_parameters
+    gv.simulation_flag = int(f.readline())
+ValueError: invalid literal for int() with base 10: ''

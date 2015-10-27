@@ -1,5 +1,4 @@
-The master node of this job is gpu-9-2.local
+The master node of this job is sh-2-34.local
 The working directory is
 This job runs on the following nodes:
-gpu-9-2
-max # of balls (n_b) = 1606
+sh-2-34
