@@ -15,7 +15,7 @@ enhanced_sampling_flag=0  # 0: off. 1: sub-binning balls by standard deviation d
 
 num_balls_limit=100000  # limit is set depending on the available memory. parameter needed in case the calculated max_num_balls
                  # is greater or too much smaller than the limit.
-radius=80  # radius can be changed in the middle of the simulation.
+radius=60  # radius can be changed in the middle of the simulation.
 num_walkers=10  # num_walkers should be fixed.
 num_cvs=6  # number of collective variables (num_cvs) should be fixed.
 lower_bound=-180.0  # lower bound value for the collective variables. set it to arbitrary value if collective variables have
@@ -23,7 +23,7 @@ lower_bound=-180.0  # lower bound value for the collective variables. set it to 
 upper_bound=180.0  # upper bound value for the collective variables.
 
 initial_step_num=0  # initial_step_num should be changed from 0 when restarting a simulation.
-max_num_steps=10  # maximum number of steps for the simulation.
+max_num_steps=50  # maximum number of steps for the simulation.
 num_occupied_balls=1  # num_occupied_balls should be changed when restarting a simulation.
 first_walker=0  # only needed if simulation_flag is not equal to 0, otherwise put 0.
 last_walker=0  # only needed if simulation_flag is not equal to 0, otherwise put 0.

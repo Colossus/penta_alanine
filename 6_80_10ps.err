@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "we_main.py", line 83, in <module>
-    weighted_ensemble_simulation('we_parameters.txt', 'we_initial_values.txt')
-  File "we_main.py", line 14, in weighted_ensemble_simulation
-    we_functions.set_parameters(input_parameters_file)
-  File "/scratch/users/jbirgmei/CS229/penta_alanine/we_functions.py", line 26, in set_parameters
-    gv.simulation_flag = int(f.readline())
-ValueError: invalid literal for int() with base 10: ''

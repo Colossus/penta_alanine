@@ -1,2 +1,6 @@
 *.pyc
 *.swp
+*.err
+*.out
+/WE*
+*nodefilelist*
