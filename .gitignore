@@ -4,3 +4,4 @@
 *.out
 /WE*
 *nodefilelist*
+bash_script_input_file.txt

@@ -9,7 +9,7 @@ sorting_flag=1  # 0: sort walkers' weights in descending order (most probable wa
 rate_flag=0  # 0: off. 1: on. rates/fluxes between pre-defined states  will be calculated. the walker's state is
            #  determined by we_check_state_function.py.
 num_states=1  # number of pre-defined states for rate/flux calculation. only needed if rate_flag = 1, otherwise 1.
-enhanced_sampling_flag=0  # 0: off. 1: sub-binning balls by standard deviation distance from center of ball. 2: binning
+enhanced_sampling_flag=3  # 0: off. 1: sub-binning balls by standard deviation distance from center of ball. 2: binning
                         # walkers if the walkers have some property less or greater than threshold. 3: spectral
                         # clustering.
 
@@ -46,14 +46,8 @@ properties_to_keep_track=[20, 21, 22]  # properties of the
                           # sequentially separated by a space, e.g. -1 2. see above as an example.
 
 ### for the next four lines, if enhanced_sampling flag == 3 ###
-# num_balls_for_sc  # minimum number of balls present to perform spectral clustering for that step
-# num_clusters  # number of clusters for k-means part of spectral clustering
-# num_walkers_for_sc  # number of walkers for each macro-state, usually set equal to the avg number of walkers per
+num_balls_for_sc=100  # minimum number of balls present to perform spectral clustering for that step
+num_clusters=10  # number of clusters for k-means part of spectral clustering
+num_walkers_for_sc=100  # number of walkers for each macro-state, usually set equal to the avg number of walkers per
                     # macro-state, which is (num_balls_for_sc/num_clusters)*num_walkers
-# timestep  # length of timestep in ps
-
-# as an example,
-# 1000
-# 10
-# 1000
-# 10.0
+timestep=0.002  # length of timestep in ps
