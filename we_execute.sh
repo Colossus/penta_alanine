@@ -21,11 +21,9 @@ echo The working directory is `echo $WORKDIR`
 echo This job runs on the following nodes:
 echo `scontrol show hostname $SLURM_JOB_NODELIST`
 
-export MAIN_DIRECTORY=/scratch/users/jbirgmei/CS229/penta_alanine  # TODO: set main directory for WE simulation
 num_nodes=1  # TODO: set number of nodes requested
 num_cpu=2  # TODO: set number of cores per node
 
-cd $MAIN_DIRECTORY
 scontrol show hostname $SLURM_JOB_NODELIST > initial_nodefilelist.txt
 for i in `seq 1 $num_nodes`;
 do 

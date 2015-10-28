@@ -2,9 +2,8 @@ import numpy as np
 from time import time
 import os
 import sys
-main_directory = '/scratch/users/jbirgmei/CS229/penta_alanine'  # TODO: set main directory for WE simulation
+main_directory = os.environ['MAIN_DIRECTORY']  # TODO: set main directory for WE simulation
 sys.path.append(main_directory)
-os.chdir(main_directory)
 import we_global_variables as gv
 import we_functions
 
@@ -74,7 +73,7 @@ def weighted_ensemble_simulation(input_initial_values_file):
         balls = new_balls
         t2 = time()
 
-        os.chdir(gv.main_directory+'/WE')
+        os.chdir(gv.main_directory+('/%s' % gv.we_dir))
         f = open('time_record.txt', 'a')
         f.write(str(step_num+1) + '-th step: ' + 'simulation time: ' + str(t1-t0) + ' ' + 'post-processing time: ' +
                 str(t2-t1) + '\n')

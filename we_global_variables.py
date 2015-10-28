@@ -40,3 +40,5 @@ global timestep
 global max_num_balls
 global current_num_balls
 global total_num_walkers
+
+global we_dir

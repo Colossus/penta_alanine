@@ -6,9 +6,10 @@
 # num_sim_walkers should be equal to num_nodes * num_cpu, since one walker will run with one node.
 ###
 
-export MAIN_DIRECTORY=/scratch/users/jbirgmei/CS229/penta_alanine
-export WALKER_DIRECTORY=/scratch/users/jbirgmei/CS229/penta_alanine/WE
 export GROMACS=/home/jbirgmei/gromacs/4.6.4/bin
+
+source we_dir.sh
+echo $WALKER_DIRECTORY
 
 num_nodes=1
 num_cpu=2
@@ -16,7 +17,6 @@ num_gpu=4
 num_sim_walkers=2
 
 # get sequence of walker indices from sh_input.txt
-cd $MAIN_DIRECTORY
 output=$(cat bash_script_input_file.txt)
 first_walker=$(echo $output | awk '{$NF=""}1')
 last_walker=$(echo $output | cut -d'_' -f 2)
