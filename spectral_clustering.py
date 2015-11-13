@@ -75,8 +75,6 @@ def spectral_clustering(balls_file, evectors_file, num_clusters):
             log_second_evector[i] = 0.0
         else:
             log_second_evector[i] = np.log(second_evector[i])
-    a = balls
-    b = log_second_evector
     matrix = np.hstack((balls, log_second_evector))
 
     while True:
