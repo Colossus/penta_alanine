@@ -724,7 +724,7 @@ def spectral_clustering(step_num, temp_walker_list, balls, ball_clusters_list):
         labeled_matrix = np.zeros((matrix.shape[0], matrix.shape[1] + 1))
         labeled_matrix[:,0:matrix.shape[1]] = matrix
         labeled_matrix[:,matrix.shape[1]] = labels
-        print >>f, dunn(labeled_matrix)
+        print >>dunn_index_f, dunn(labeled_matrix)
     f = open('ball_clustering_' + str(step_num + 1) + '.txt', 'w')
 
     '''
