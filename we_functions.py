@@ -565,61 +565,68 @@ def binning(step_num, walker_list, temp_walker_list, balls, ball_to_walkers, key
     if gv.enhanced_sampling_flag == 2 and gv.static_threshold_flag == 0:
         gv.threshold_values = new_threshold_values
     return balls
+
+
 def delta2(c1, c2):
-  minDist = np.inf
-  for i in xrange(0, len(c1)):
-    for j in xrange(0, len(c2)):
-      p1 = c1[i,:]
-      p2 = c2[j,:]
-      dist = np.sqrt(np.sum(np.square(p2 - p1)))
-      if dist < minDist:
-        minDist = dist
-  return minDist
+    min_dist = np.inf
+    for i in xrange(0, len(c1)):
+        for j in xrange(0, len(c2)):
+            p1 = c1[i, :]
+            p2 = c2[j, :]
+            dist = np.sqrt(np.sum(np.square(p2 - p1)))
+            if dist < min_dist:
+                min_dist = dist
+    return min_dist
+
 
 def delta1(c):
-  maxDist = 0
-  for i in xrange(0, len(c)):
-    for j in xrange(0, len(c)):
-      if i == j:
-        continue
-      p1 = c[i,:]
-      p2 = c[j,:]
-      dist = np.sqrt(np.sum(np.square(p2 - p1)))
-      if dist > maxDist:
-        maxDist = dist
-  return maxDist
+    max_dist = 0
+    for i in xrange(0, len(c)):
+        for j in xrange(0, len(c)):
+            if i == j:
+                continue
+            p1 = c[i, :]
+            p2 = c[j, :]
+            dist = np.sqrt(np.sum(np.square(p2 - p1)))
+            if dist > max_dist:
+                max_dist = dist
+    return max_dist
+
 
 def minDelta2(ball_coords):
-  column = ball_coords.shape[1]-1
-  num_clusters = int(np.max(ball_coords[:,column])+1)
-  min_delta2 = np.inf
-  for i in xrange(0,num_clusters):
-    for j in xrange(0,num_clusters):
-      if i == j:
-        continue
-      i = float(i)
-      j = float(j)
-      c1 = ball_coords[ball_coords[:,column] == i,:-1]
-      c2 = ball_coords[ball_coords[:,column] == j,:-1]
-      d2 = delta2(c1, c2)
-      if d2 < min_delta2:
-        min_delta2 = d2
-  return min_delta2
+    column = ball_coords.shape[1]-1
+    num_clusters = int(np.max(ball_coords[:, column])+1)
+    min_delta2 = np.inf
+    for i in xrange(0, num_clusters):
+        for j in xrange(0, num_clusters):
+            if i == j:
+                continue
+            i = float(i)
+            j = float(j)
+            c1 = ball_coords[ball_coords[:, column] == i, :-1]
+            c2 = ball_coords[ball_coords[:, column] == j, :-1]
+            d2 = delta2(c1, c2)
+            if d2 < min_delta2:
+                min_delta2 = d2
+    return min_delta2
+
 
 def maxDelta1(ball_coords):
-  column = ball_coords.shape[1]-1
-  num_clusters = int(np.max(ball_coords[:,column])+1)
-  max_delta1 = 0
-  for i in xrange(0,num_clusters):
-    i = float(i)
-    c1 = ball_coords[ball_coords[:,column] == i,:-1]
-    d1 = delta1(c1)
-    if d1 > max_delta1:
-      max_delta1 = d1
-  return max_delta1
+    column = ball_coords.shape[1]-1
+    num_clusters = int(np.max(ball_coords[:, column])+1)
+    max_delta1 = 0
+    for i in xrange(0,num_clusters):
+        i = float(i)
+        c1 = ball_coords[ball_coords[:, column] == i, :-1]
+        d1 = delta1(c1)
+        if d1 > max_delta1:
+            max_delta1 = d1
+    return max_delta1
+
 
 def dunn(ball_coords):
-  return minDelta2(ball_coords) / maxDelta1(ball_coords)
+    return minDelta2(ball_coords)/maxDelta1(ball_coords)
+
 
 def spectral_clustering(step_num, temp_walker_list, balls, ball_clusters_list):
     transition_matrix = np.zeros((balls.shape[0], balls.shape[0]))
@@ -660,13 +667,16 @@ def spectral_clustering(step_num, temp_walker_list, balls, ball_clusters_list):
     new_transition_matrix = np.zeros((balls.shape[0], balls.shape[0]))
     for i in range(new_transition_matrix.shape[0]):
         for j in range(new_transition_matrix.shape[1]):
-            new_transition_matrix[i][j] = (transition_matrix[i][j] + transition_matrix[j][i]) / 2.0
+            new_transition_matrix[i][j] = transition_matrix[i][j] + transition_matrix[j][i]
     for i in range(new_transition_matrix.shape[0]):
         row_sum = np.sum(new_transition_matrix[i])
         for j in range(new_transition_matrix.shape[1]):
             if row_sum != 0.0:
                 new_transition_matrix[i][j] /= row_sum
+    os.chdir(gv.main_directory + '/WE')
+    np.savetxt('transition_matrix_' + str(step_num + 1) + '.txt', new_transition_matrix, fmt=' %1.10e')
 
+    '''
     evalues, evectors = np.linalg.eig(new_transition_matrix.T)
     idx = abs(evalues).argsort()[::-1]
     evectors = evectors[:, idx]
@@ -678,27 +688,25 @@ def spectral_clustering(step_num, temp_walker_list, balls, ball_clusters_list):
             inv_eq_vec_diag_matrix[i][i] = 1.0 / eq_vec_diag_matrix[i][i]
     symmetric_transition_matrix = np.dot(np.sqrt(eq_vec_diag_matrix),
                                          np.dot(new_transition_matrix, np.sqrt(inv_eq_vec_diag_matrix)))
+    '''
 
-    final_evalues, final_evectors = np.linalg.eig(symmetric_transition_matrix)
+    final_evalues, final_evectors = np.linalg.eig(new_transition_matrix.T)
     idx = abs(final_evalues).argsort()[::-1]
     final_evalues = np.real(final_evalues[idx])
     final_evectors = np.real(final_evectors[:, idx])
+    np.savetxt('evalues_' + str(step_num + 1) + '.txt', final_evalues, fmt=' %1.10e')
+    np.savetxt('evectors_' + str(step_num + 1) + '.txt', final_evectors, fmt=' %1.10e')
 
     num_clusters = gv.num_clusters
     for i in range(len(final_evalues)):
         if abs(final_evalues[i]) < 1.0e-10:
             final_evalues[i] = 0.0
-    second_evector = final_evectors[:, 1]
-    second_evector = second_evector.reshape(second_evector.shape[0], 1)
-    log_second_evector = np.zeros((second_evector.shape[0], 1))
-    for i in range(second_evector.shape[0]):
-        if second_evector[i] < 0.0:
-            log_second_evector[i] = -np.log(-second_evector[i])
-        elif second_evector[i] == 0.0 or second_evector[i] == 1.0:
-            log_second_evector[i] = 0.0
+    normalized_second_evector = np.zeros((final_evectors.shape[0], 1))
+    for i in range(final_evectors.shape[0]):
+        if final_evectors[i, 0] != 0.0:
+            normalized_second_evector[i] = final_evectors[i, 1] / abs(final_evectors[i, 0])
         else:
-            log_second_evector[i] = np.log(second_evector[i])
-
+            normalized_second_evector[i] = 0.0
 
     '''
     sorted_second_evector = np.sort(second_evector, axis=0)
@@ -710,7 +718,7 @@ def spectral_clustering(step_num, temp_walker_list, balls, ball_clusters_list):
     num_clusters = len(array_of_clusters)
     '''
 
-    matrix = np.hstack((balls, log_second_evector))
+    matrix = np.hstack((balls, normalized_second_evector))
 
     while True:
         try:
@@ -719,14 +727,12 @@ def spectral_clustering(step_num, temp_walker_list, balls, ball_clusters_list):
         except ClusterError:
             num_clusters -= 1
 
-    os.chdir(gv.main_directory + '/WE')
     with open('dunn_index_' + str(step_num + 1) + '.txt', 'w') as dunn_index_f:
         labeled_matrix = np.zeros((matrix.shape[0], matrix.shape[1] + 1))
         labeled_matrix[:,0:matrix.shape[1]] = matrix
         labeled_matrix[:,matrix.shape[1]] = labels
         print >>dunn_index_f, dunn(labeled_matrix)
     f = open('ball_clustering_' + str(step_num + 1) + '.txt', 'w')
-
     '''
     for i in range(num_clusters):
         first = 0
@@ -755,7 +761,6 @@ def spectral_clustering(step_num, temp_walker_list, balls, ball_clusters_list):
                 f.write('\n')
                 ball_clusters_list[tuple(ref_ball_center)].append(tuple(ball_center))
     '''
-
     for i in range(num_clusters):
         first = 0
         for j in range(balls.shape[0]):
@@ -765,7 +770,7 @@ def spectral_clustering(step_num, temp_walker_list, balls, ball_clusters_list):
                 ball_cluster = copy.deepcopy(ref_ball_center)
                 ball_cluster.append(i)
                 ball_cluster.append(abs(final_evectors[j, 0]))
-                ball_cluster.append(log_second_evector[j, 0])
+                ball_cluster.append(normalized_second_evector[j, 0])
                 ball_cluster.append(final_evectors[j, 2])
                 f.write(' '.join(map(lambda coordinate: str(coordinate), ball_cluster)))
                 f.write('\n')
@@ -776,7 +781,7 @@ def spectral_clustering(step_num, temp_walker_list, balls, ball_clusters_list):
                 ball_cluster = copy.deepcopy(ball_center)
                 ball_cluster.append(i)
                 ball_cluster.append(abs(final_evectors[j, 0]))
-                ball_cluster.append(log_second_evector[j, 0])
+                ball_cluster.append(normalized_second_evector[j, 0])
                 ball_cluster.append(final_evectors[j, 2])
                 f.write(' '.join(map(lambda coordinate: str(coordinate), ball_cluster)))
                 f.write('\n')
@@ -784,17 +789,12 @@ def spectral_clustering(step_num, temp_walker_list, balls, ball_clusters_list):
                 balls[j][gv.num_cvs+2] -= 1
     f.close()
 
-    np.savetxt('evalues_' + str(step_num + 1) + '.txt', final_evalues, fmt=' %1.10e')
-    np.savetxt('evectors_' + str(step_num + 1) + '.txt', final_evectors, fmt=' %1.10e')
-    np.savetxt('transition_matrix_' + str(step_num + 1) + '.txt', symmetric_transition_matrix, fmt=' %1.10e')
 
-
-def resampling_for_sc(walker_list, temp_walker_list, balls, ball_to_walkers, ball_clusters_list):
+def resampling_for_sc(walker_list, temp_walker_list, balls, ball_to_walkers, ball_clusters_list, vacant_walker_indices):
     num_occupied_balls = 0
     weights = [walker_list[i].weight for i in range(gv.total_num_walkers)]
     occupied_indices = np.zeros(gv.max_num_balls*gv.num_walkers_for_sc, int)
     excess_index = gv.total_num_walkers
-    vacant_walker_indices = []
     for current_cluster in ball_clusters_list:
         if len(ball_clusters_list[current_cluster]) > 0:
             num_occupied_balls += 1
@@ -869,6 +869,9 @@ def resampling_for_sc(walker_list, temp_walker_list, balls, ball_to_walkers, bal
                         weights[x] = xy_weight
                         if y not in new_indices:
                             vacant_walker_indices.append(y)
+                            # remove walker y directory
+                            os.chdir(gv.main_directory + '/WE')
+                            os.system('rm -rf walker' + str(y))
 
                 for ni, global_index in enumerate(new_indices):
                     if occupied_indices[global_index] == 0:
