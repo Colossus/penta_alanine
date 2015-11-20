@@ -631,14 +631,14 @@ def dunn(ball_coords):
 def spectral_clustering(step_num, temp_walker_list, balls, ball_clusters_list):
     transition_matrix = np.zeros((balls.shape[0], balls.shape[0]))
     for i in range(gv.total_num_walkers):
-        if temp_walker_list[i].previous_distance_from_center <= gv.radius:
-            previous_coordinates = temp_walker_list[i].previous_coordinates
-        else:
+        if temp_walker_list[i].previous_distance_from_center > gv.radius:
             previous_coordinates = temp_walker_list[i].previous_ball_center
-        if temp_walker_list[i].current_distance_from_center <= gv.radius:
-            current_coordinates = temp_walker_list[i].current_coordinates
         else:
+            previous_coordinates = temp_walker_list[i].previous_coordinates
+        if temp_walker_list[i].current_distance_from_center > gv.radius:
             current_coordinates = temp_walker_list[i].current_ball_center
+        else:
+            current_coordinates = temp_walker_list[i].current_coordinates
 
         previous_distance = 0.0
         previous_ball_key = 0
@@ -648,14 +648,14 @@ def spectral_clustering(step_num, temp_walker_list, balls, ball_clusters_list):
             ball_center = balls[j][0:gv.num_cvs].tolist()
             previous_distance_from_center = calculate_distance_from_center(ball_center, previous_coordinates)
             current_distance_from_center = calculate_distance_from_center(ball_center, current_coordinates)
-            if previous_distance == 0.0:
+            if j == 0:
                 previous_distance = previous_distance_from_center
                 previous_ball_key = j
             else:
                 if previous_distance_from_center < previous_distance:
                     previous_distance = previous_distance_from_center
                     previous_ball_key = j
-            if current_distance == 0.0:
+            if j == 0:
                 current_distance = current_distance_from_center
                 current_ball_key = j
             else:
@@ -698,9 +698,6 @@ def spectral_clustering(step_num, temp_walker_list, balls, ball_clusters_list):
     np.savetxt('evectors_' + str(step_num + 1) + '.txt', final_evectors, fmt=' %1.10e')
 
     num_clusters = gv.num_clusters
-    for i in range(len(final_evalues)):
-        if abs(final_evalues[i]) < 1.0e-10:
-            final_evalues[i] = 0.0
     normalized_second_evector = np.zeros((final_evectors.shape[0], 1))
     for i in range(final_evectors.shape[0]):
         if final_evectors[i, 0] != 0.0:
