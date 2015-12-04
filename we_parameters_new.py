@@ -1,5 +1,5 @@
-main_directory='/scratch/users/jbirgmei/CS229/penta_alanine'
-initial_configuration_directory='/scratch/users/jbirgmei/CS229/penta_alanine/StarterFolderGROMACS_WE'
+main_directory='/scratch/users/jbirgmei/CS229/penta_alanine_100b_3c'
+initial_configuration_directory='/scratch/users/jbirgmei/CS229/penta_alanine_100b_3c/StarterFolderGROMACS_WE'
 
 simulation_flag=0  # 0: new simulation. 1: restarting simulation from middle of simulation. 2: restarting simulation from
                    # middle of binning. 3: restarting simulation from middle of resampling.
